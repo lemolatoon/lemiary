@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
     "run": "node out/index.js",
+    "wait_run": "sleep 2 && node out/index.js",
     "start": "npm run build && npm run run"
   },
   "keywords": [],
@@ -14,7 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.0.2",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",

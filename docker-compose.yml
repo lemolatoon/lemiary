@@ -6,17 +6,35 @@ services:
     image: mysql:latest
     container_name: mysql_host
     environment:
-      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-      MYSQL_DATABASE: $MYSQL_DATABASE
-      MYSQL_USER: $MYSQL_USER
-      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       TZ: "Asia/Tokyo"
-    command: mysqld --character-set-server=utf8mb4 --colleation-server=utf8mb4_unicode_ci
     volumes:
-    - ./docker/db/data:/var/lib/mysql
-    - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
-    - ./docker/db/sql:/docker-entrypoint-initdb.d
+      - ./db/conf:/etc/mysql/conf.d/:ro
+      - ./mysqldata:/var/lib/mysql
+      - ./db/logs:/var/log/mysql
+      - ./db/initdb.d/:/docker-entrypoint-initdb.d/
     ports:
-    - 3306:3306
+      - "3306:3306"
 
+  # backend
   node:
+    image: backend
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: "Asia/Tokyo"
+    container_name: node_docker_backend
+    tty: true
+    ports:
+     - "3001:3001"
+    depends_on:
+     - db
+    
