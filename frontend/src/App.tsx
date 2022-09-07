@@ -1,7 +1,8 @@
 import './App.css';
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-function App() {
+export function App() {
   const [message, setMessage] = useState("");
   const [id, setId] = useState<number | null>(null);
   const [content, setContent] = useState<string | null>("");
@@ -32,12 +33,18 @@ function App() {
 
   return (
     <div className="App">
-      <h1>frontend from React</h1>
-      <h2>Please Enter Diary Id</h2>
-      <input type="text" onChange={(e) => setId(parseInt(e.target.value))} />
-      <p>{message}</p>
-      {renderContent()}
-    </div>
+      <div className="MainContent">
+        <h1>frontend from React</h1>
+        <h2>Please Enter Diary Id</h2>
+        <input type="text" onChange={(e) => setId(parseInt(e.target.value))} />
+        <p>{message}</p>
+        {renderContent()}
+      </div>
+      <div className="Menu">
+        <h2>Menu</h2>
+        <Link to='./submit'>日記を登録する</Link>
+      </div>
+    </div >
   );
 }
 
