@@ -1,4 +1,5 @@
-import express from "express"
+import util from 'util';
+import express, { Request } from "express"
 import dotenv from "dotenv";
 import mysql from "mysql2";
 dotenv.config();
@@ -26,13 +27,10 @@ const connection = (() => {
             return [false, null];
         }
     }
-    const sleepFunc = (m: number) => {
-        return new Promise((resolve) => setTimeout(resolve, m));
-    };
     while (true) {
         const [flag, connection] = get_connection();
         if (flag) {
-            // This cast is safe because when `get_connectionl` returns true as flag, connection must not be null. 
+            // This cast is safe because when `get_connection` returns true as flag, connection must not be null. 
             return connection as mysql.Connection;
         }
     }
@@ -59,6 +57,24 @@ app.get("/api", async (req, res) => {
     )
     console.log("connection end with status 0");
     // res.json({ message: "Hello World! from express" });
+})
+
+type IdReq = { "diary_id": number };
+app.get("/api/:diary_id(\\d+)", async (req: Request<IdReq>, res) => {
+    res.set({ 'Access-Control-Allow-Origin': '*' }); // ここでヘッダーにアクセス許可の情報を追加
+    console.log(`req: ${util.format(req.params.diary_id)}`);
+    connection.query(
+        `SELECT * FROM \`diaries\` WHERE \`id\` = ${req.params.diary_id}`,
+        (err, results: any, fields) => {
+            if (err) {
+                console.log("connection end with status 1");
+                res.status(404).json({ message: "Not Found" });
+            } else {
+                res.json(results[0]);
+                console.log(results);
+            }
+        }
+    )
 })
 
 
