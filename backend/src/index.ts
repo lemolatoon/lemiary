@@ -2,16 +2,10 @@ import util from 'util';
 import express, { Request } from "express"
 import dotenv from "dotenv";
 import mysql from "mysql2";
+import bodyParser from "body-parser";
 dotenv.config();
 const app = express()
 const port = process.env.PORT || 3001
-// console.log({
-//     // host: "172.20.0.2",
-//     host: "db",
-//     user: process.env.MYSQL_USER,
-//     password: process.env.MYSQL_PASSWORD,
-//     database: process.env.MYSQL_DATABASE,
-// });
 const connection = (() => {
     let get_connection = () => {
         try {
@@ -35,6 +29,15 @@ const connection = (() => {
         }
     }
 })();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 
 app.get("/", async (req, res) => {
     res.set({ 'Access-Control-Allow-Origin': '*' }); // ここでヘッダーにアクセス許可の情報を追加
@@ -77,7 +80,15 @@ app.get("/api/:diary_id(\\d+)", async (req: Request<IdReq>, res) => {
     )
 })
 
+type DiaryReq = { "content": string };
+app.post("/submit/", async (req: Request<IdReq>, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // ここでヘッダーにアクセス許可の情報を追加
+    console.log("submit post detected!");
+    console.log(req.body);
+    res.send(util.format(req.body));
+})
+
 
 app.listen(port, () => {
-    console.log(`listening on *: ${port}`)
+    console.log(`listening on *: ${port}`);
 })

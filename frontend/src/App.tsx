@@ -8,7 +8,7 @@ export function App() {
   const [content, setContent] = useState<string | null>("");
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/${id}`)
+    fetch(`http://localhost:3001/api/${id}`) // TODO: rewrite this URL as global URL
       .then((res) => res.json())
       .then((data) => { setMessage(`Got content by id: ${id}`); setContent(data.content); })
       .catch((err) => { setMessage(`failed to fetch content by id: ${id}`); setContent(null); });
