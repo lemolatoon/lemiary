@@ -32,20 +32,20 @@ const connection = (() => {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// Make sure to avoid blocking by CORS policy when local host using debugging.
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
 
 app.get("/", async (req, res) => {
-    res.set({ 'Access-Control-Allow-Origin': '*' }); // ここでヘッダーにアクセス許可の情報を追加
     res.send("Hello from express!!")
 })
 
 app.get("/api", async (req, res) => {
-    res.set({ 'Access-Control-Allow-Origin': '*' }); // ここでヘッダーにアクセス許可の情報を追加
     connection.query(
         "SELECT * FROM `diaries`",
         (err, results: any, fields) => {
@@ -59,12 +59,10 @@ app.get("/api", async (req, res) => {
         }
     )
     console.log("connection end with status 0");
-    // res.json({ message: "Hello World! from express" });
 })
 
 type IdReq = { "diary_id": number };
 app.get("/api/:diary_id(\\d+)", async (req: Request<IdReq>, res) => {
-    res.set({ 'Access-Control-Allow-Origin': '*' }); // ここでヘッダーにアクセス許可の情報を追加
     console.log(`req: ${util.format(req.params.diary_id)}`);
     connection.query(
         `SELECT * FROM \`diaries\` WHERE \`id\` = ${req.params.diary_id}`,
