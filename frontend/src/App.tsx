@@ -1,4 +1,4 @@
-import './App.css';
+import "./App.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -10,15 +10,21 @@ export function App() {
   useEffect(() => {
     fetch(`http://localhost:3001/api/${id}`) // TODO: rewrite this URL as global URL
       .then((res) => res.json())
-      .then((data) => { setMessage(`Got content by id: ${id}`); setContent(data.content); })
-      .catch((err) => { setMessage(`failed to fetch content by id: ${id}`); setContent(null); });
-  }, [id])
+      .then((data) => {
+        setMessage(`Got content by id: ${id}`);
+        setContent(data.content);
+      })
+      .catch((err) => {
+        setMessage(`failed to fetch content by id: ${id}`);
+        setContent(null);
+      });
+  }, [id]);
 
   useEffect(() => {
     fetch("http://localhost:3001/api")
       .then((res) => res.json())
       .then((data) => setContent(data.content));
-  }, [])
+  }, []);
 
   const renderContent = () => {
     if (id && content) {
@@ -26,10 +32,9 @@ export function App() {
         <div>
           <p>{content}</p>
         </div>
-      )
+      );
     }
-  }
-
+  };
 
   return (
     <div className="App">
@@ -42,9 +47,9 @@ export function App() {
       </div>
       <div className="Menu">
         <h2>Menu</h2>
-        <Link to='./submit'>日記を登録する</Link>
+        <Link to="./submit">日記を登録する</Link>
       </div>
-    </div >
+    </div>
   );
 }
 
