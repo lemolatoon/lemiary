@@ -3,6 +3,17 @@
   float: center;
 }
 
+.MainContent {
+  text-align: center;
+  float: center;
+}
+
+.Menu {
+  text-align: center;
+  float: right;
+  margin-right: 90px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
