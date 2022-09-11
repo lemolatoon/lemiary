@@ -5,13 +5,20 @@ import { Link } from "react-router-dom";
 export function App() {
   const [message, setMessage] = useState("");
   const [id, setId] = useState<number | null>(null);
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState<string | null>("");
 
+  type DbData = {
+    id: number;
+    title: string;
+    content: string;
+  };
   useEffect(() => {
-    fetch(`http://localhost:3001/api/${id}`) // TODO: rewrite this URL as global URL
+    id && fetch(`http://localhost:3001/api/${id}`) // TODO: rewrite this URL as global URL
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: DbData) => {
         setMessage(`Got content by id: ${id}`);
+        setTitle(data.title);
         setContent(data.content);
       })
       .catch((err) => {
@@ -28,8 +35,10 @@ export function App() {
 
   const renderContent = () => {
     if (id && content) {
+      console.log(title);
       return (
         <div>
+          <h3>{title}</h3>
           <p>{content}</p>
         </div>
       );

@@ -11,6 +11,10 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       # TZ: "Asia/Tokyo"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 5
     volumes:
       - ./db/conf:/etc/mysql/conf.d/:ro
       - ./mysqldata:/var/lib/mysql
@@ -36,4 +40,5 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-      - db
+      db:
+        condition: service_healthy

@@ -5,6 +5,7 @@ create table if not exists diaries
 (
   `id` int(11) not null auto_increment,
   `date` datetime,
+  `title` text,
   `content` text,
   primary key (`id`)
 );

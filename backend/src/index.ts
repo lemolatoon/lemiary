@@ -81,7 +81,7 @@ app.get("/api/:diary_id(\\d+)", async (req: Request<IdReq>, res) => {
   );
 });
 
-type DiaryReq = { content: string };
+type DiaryReq = { title: string, content: string };
 app.post("/submit/", async (req: Request<IdReq>, res) => {
   console.log("submit post detected!");
   console.log(req.body);
@@ -99,7 +99,7 @@ app.post("/submit/", async (req: Request<IdReq>, res) => {
     return y + m + d + h + mi + s;
   }
   connection.query(
-    `INSERT INTO \`diaries\` (\`date\`, \`content\`) VALUES ('${get_formatted_datetime()}', '${req.body.content}')`,
+    `INSERT INTO \`diaries\` (\`date\`, \`title\`, \`content\`) VALUES ('${get_formatted_datetime()}', '${req.body.title}','${req.body.content}')`,
     (err, results, fields) => {
       console.log(results);
       if (err) {
