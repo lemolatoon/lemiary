@@ -1,0 +1,15 @@
+.titleForm {
+    width: 80%;
+    box-sizing: boarder-box;
+}
+
+.form {
+    margin-top: 20px;
+    width: 80%;
+    height: 80vh;
+    box-sizing: boarder-box;
+}
+
+.SubmitPage {
+    text-align: center;
+}

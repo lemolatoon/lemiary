@@ -1,6 +1,6 @@
 version: "3"
 
-services: 
+services:
   # MySQL
   db:
     image: mysql:latest
@@ -10,7 +10,11 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      TZ: "Asia/Tokyo"
+      # TZ: "Asia/Tokyo"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 5
     volumes:
       - ./db/conf:/etc/mysql/conf.d/:ro
       - ./mysqldata:/var/lib/mysql
@@ -22,7 +26,7 @@ services:
   # backend
   node:
     image: backend
-    build: 
+    build:
       context: .
       dockerfile: ./Dockerfile
     environment:
@@ -30,11 +34,11 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      TZ: "Asia/Tokyo"
+      # TZ: "Asia/Tokyo"
     container_name: node_docker_backend
     tty: true
     ports:
-     - "3001:3001"
+      - "3001:3001"
     depends_on:
-     - db
-    
+      db:
+        condition: service_healthy

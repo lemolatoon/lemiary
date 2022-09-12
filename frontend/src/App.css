@@ -1,17 +1,26 @@
 .App {
-  text-align: center;
-  float: center;
+  display: flex;
+  justify-content: center;
 }
 
 .MainContent {
   text-align: center;
-  float: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.Menu {
+.diary-list .Menu {
+  margin-left: auto;
+  margin-right: 200px;
   text-align: center;
-  float: right;
-  margin-right: 90px;
+}
+
+.diary {
+  font-size: 150%;
+}
+
+.diary-list {
+  margin-top: 40px;
 }
 
 .App-logo {
