@@ -10,4 +10,4 @@ create table if not exists diaries
   primary key (`id`)
 );
 
-insert into diaries (content) VALUES ("diary_head");
+-- insert into diaries (content) VALUES ("diary_head");

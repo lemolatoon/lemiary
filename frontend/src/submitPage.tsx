@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Header from "./Header";
 import "./submitPage.css";
 
 const DiaryForm = () => {
@@ -27,7 +28,7 @@ const DiaryForm = () => {
   }
 
   return (
-    <div >
+    <div>
       <div>
         title: <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
       </div>
@@ -45,9 +46,12 @@ const DiaryForm = () => {
 
 export const SubmitPage = () => {
   return (
-    <div className="App">
-      <h1>Submit Page</h1>
-      <DiaryForm />
-    </div>
+    <>
+      {/* <Header /> */}
+      <div className="SubmitPage">
+        <h1>Submit Page</h1>
+        <DiaryForm />
+      </div>
+    </>
   );
 };

@@ -7,7 +7,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001;
 const connection = (() => {
-  let get_connection = () => {
+  const get_connection: () => [boolean, mysql.Connection | null] = () => {
     try {
       return [
         true,
@@ -80,6 +80,32 @@ app.get("/api/:diary_id(\\d+)", async (req: Request<IdReq>, res) => {
     }
   );
 });
+
+
+type DbData = {
+  id: number;
+  date: string;
+  title: string;
+  content: string;
+};
+app.get("/api/all/", async (req, res) => {
+  console.log("Get: /api/all/");
+  connection.query(
+    `SELECT * FROM \`diaries\` ORDER BY \`date\` DESC`,
+    (err, results, fields) => {
+      console.log("err: ", err);
+      console.log("results: ", results);
+      console.log("fields: ", fields);
+      if (err) {
+        console.log(err);
+        res.status(404).json({ message: "Not Found" });
+      } else {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  )
+})
 
 type DiaryReq = { title: string, content: string };
 app.post("/submit/", async (req: Request<IdReq>, res) => {
