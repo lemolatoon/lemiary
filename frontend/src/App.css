@@ -15,6 +15,13 @@
   text-align: center;
 }
 
+.diary-list-child {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  color: #0000FF;
+}
+
 .diary {
   font-size: 150%;
 }
